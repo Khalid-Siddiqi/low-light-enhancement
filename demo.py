@@ -73,7 +73,21 @@ def main():
                         help='number of data loading workers (default: 4)')
     parser.add_argument('--pixel_shuffle', action='store_true',
                         help='uses pixel_shuffle in training')
+    if len(sys.argv) == 1:
+        # No command-line arguments, use default test run
+        sys.argv += [
+            'test',
+            '--arch_type', 'Sony',
+            '--dataset_dir', './dataset/',
+            '--test_img_list_file', './dataset/Sony_test_list.txt',
+            '--resume', './checkpoint/Sony/epoch_4000_512.pth.tar',
+            '--log_file', './log/Sony/test.log',
+            '--result_dir', './demo_output/',
+            '--gpu', '0',
+        ]
+
     args = parser.parse_args()
+
 
     if args.cmd == 'train':
         os.makedirs(args.checkpoint_dir, exist_ok=True)
