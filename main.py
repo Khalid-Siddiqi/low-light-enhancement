@@ -11,7 +11,7 @@ from models.lsid import lsid
 
 app = FastAPI()
 
-CHECKPOINT_PATH = "epoch_4000_512.pth.tar"
+CHECKPOINT_PATH = "checkpoint.pth.tar"
 OUTPUT_DIR = "output"
 
 def pack_raw(raw):
@@ -35,8 +35,9 @@ async def enhance(file: UploadFile = File(...)):
     # Prepare device and model
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = lsid(inchannel=4, block_size=2).to(device)
-    checkpoint = torch.load(CHECKPOINT_PATH, map_location=device)
-    model.load_state_dict(checkpoint)
+    checkpoint = torch.load(CHECKPOINT_PATH, map_location=device, weights_only=False)
+    model.load_state_dict(checkpoint["model_state_dict"])
+    #model.load_state_dict(checkpoint)
     model.eval()
 
     # Load and preprocess raw image
