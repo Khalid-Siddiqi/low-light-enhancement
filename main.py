@@ -14,7 +14,7 @@ from model import SeeInTheDarkModel  # assuming this is the model class name
 app = FastAPI()
 
 # Load model once at startup
-model_path = "checkpoints/epoch_4000_512.pth.tar"
+model_path = "epoch_4000_512.pth.tar"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Initialize model
@@ -54,4 +54,4 @@ async def predict(file: UploadFile = File(...)):
 
 
 if __name__ == "__main__":
-    uvicorn.run("fastapi_app:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
